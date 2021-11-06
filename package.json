@@ -1,8 +1,8 @@
 {
   "name": "code-analizer",
   "version": "1.0.0",
-  "description": "Read all Angular HttpClient request from a project",
-  "main": "index.js",
+  "description": "Analize code and output it in a nice UI",
+  "main": "src/index.js",
   "type": "module",
   "scripts": {
     "start": "node src/index.js",
