@@ -1,5 +1,5 @@
 {
-  "name": "read-http-request",
+  "name": "code-analizer",
   "version": "1.0.0",
   "description": "Read all Angular HttpClient request from a project",
   "main": "index.js",
