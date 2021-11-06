@@ -1,0 +1,230 @@
+body {
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #222222;
+}
+
+.basic-data {
+  background-color: #1e1e1e;
+  padding: 10px;
+  color: #fff;
+  border-radius: 6px;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+#results-data {
+  position: fixed;
+  top: 75px;
+  right: 0px;
+  margin: 10px;
+  width: 160px;
+  background: rgba(255,255,255,0.1);
+  padding: 10px;
+  color: #c7c7c7;
+  border-radius: 5px;
+  font-size: 15px;
+}
+
+#results {
+  margin-top: 30px;
+  width: 70%;
+  font-size: 15px;
+  color: #c7c7c7;
+}
+
+.hide {
+  opacity: 0;
+}
+
+#results > div.list-item {
+  border-radius: 6px;
+  background-color: rgba(255,255,255,0.025);
+  margin-bottom: 30px;
+  padding: 5px 20px;
+}
+
+#results > div.list-item > .name {
+  margin: 15px 0px;
+}
+
+#results .line-numbers {
+  border-right: 2px solid;
+  margin-right: 4px;
+  padding-right: 4px;
+  color: #8f8f8f;
+  width: 25px;
+  display: inline-block;
+  text-align: right;
+}
+
+.form-group {
+  position: relative;
+  padding: 15px 0 0;
+  margin-top: 10px;
+  width: 70%;
+}
+
+.form-field {
+  font-family: inherit;
+  width: 100%;
+  border: 0;
+  border-bottom: 2px solid #9b9b9b;
+  outline: 0;
+  font-size: 1.3rem;
+  color: #fff;
+  padding: 7px 0;
+  background: transparent;
+  transition: border-color 0.2s;
+}
+
+.form-field[name="component"]:focus ~ .form-label {
+  color: #4ec9b0;
+}
+.form-field[name="component"]:focus {
+  padding-bottom: 6px;
+  border-width: 3px;
+  border-image: linear-gradient(to right, #259b83, #4ec9b0);
+  border-image-slice: 1;
+}
+
+.form-field::placeholder {
+  color: transparent;
+}
+.form-field:placeholder-shown ~ .form-label {
+  font-size: 1.3rem;
+  cursor: text;
+  top: 20px;
+}
+
+.form-label {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: #9b9b9b;
+}
+
+.form-field:focus {
+  padding-bottom: 6px;
+  border-width: 3px;
+  border-image: linear-gradient(to right, #1976D2, #6caef0);
+  border-image-slice: 1;
+}
+.form-field:focus ~ .form-label {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: #1976D2;
+}
+
+.form-field:required, .form-field:invalid {
+  box-shadow: none;
+}
+
+.file-name {
+  border-radius: 3px;
+  padding: 3px 6px;
+  background: rgba(255,255,255,0.1);
+  color: #d1d1d1;
+  line-height: 1.8em;
+}
+
+.ocurrences-list > pre[class*="language-javascript"] {
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.ocurrences-list > pre[class*="language-javascript"]:first-child {
+  border-radius: 6px 6px 1px 1px;
+}
+.ocurrences-list > pre[class*="language-javascript"]:last-child {
+  border-radius: 1px 1px 6px 6px;
+}
+.ocurrences-list > pre[class*="language-javascript"]:only-child {
+  border-radius: 5px 5px 5px 5px;
+}
+
+span.token {
+  color: #9cdcfe;
+}
+
+.class-container {
+  margin: 40px 0px;
+}
+
+:root {
+  --primary-color: #185ee0;
+  --secondary-color: #e6eef9;
+}
+
+.container {
+  position: fixed;
+  left: 10px;
+  top: 10px;
+  align-items: center;
+  justify-content: center;
+  width: 185px;
+}
+
+.tabs {
+  display: flex;
+  position: relative;
+  padding: 0.75rem;
+  border-radius: 20px;
+  color: #fff;
+}
+.tabs * {
+  z-index: 2;
+}
+
+input[type=radio] {
+  display: none;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  width: 80px;
+  cursor: pointer;
+  transition: color 0.15s ease-in;
+}
+input[id=angular]:checked ~ .glider {
+  transform: translateX(0);
+}
+input[id=nodejs]:checked ~ .glider {
+  transform: translateX(100%);
+}
+.glider {
+  position: absolute;
+  display: flex;
+  height: 40px;
+  width: 80px;
+  background-color: rgba(255,255,255,0.1);
+  z-index: 1;
+  border-radius: 99px;
+  transition: 0.1s ease-out;
+}
+
+.list-item {
+  animation: theDMSlide 250ms ease-in-out 1;
+}
+@keyframes theDMSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}

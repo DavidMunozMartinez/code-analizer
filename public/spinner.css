@@ -1,0 +1,51 @@
+.nice-btn-container {
+  position: fixed;
+  top: 10px;
+  right: 0px;
+  transition: all 0.2s;
+  right: 10px;
+}
+.nice-btn-container.loading {
+  right: 70px;
+}
+.nice-btn-container .nice-btn {
+  width: 180px;
+  height: 60px;
+  outline: none;
+  cursor: pointer;
+  background: none;
+  transition: all 0.2s;
+  font-size: 24px;
+  border-radius: 5px;
+  font-family: "Lato", sans-serif;
+  border: 2px solid #1976D2;
+  color: #1976D2;
+}
+.nice-btn-container.loading > .nice-btn {
+  width: 60px;
+  animation: circlish-squarish-supercoolrotation 900ms linear infinite;
+}
+.nice-btn-container.loading > .nice-btn > span {
+  display: none;
+}
+
+@keyframes circlish-squarish-supercoolrotation {
+0%{ 
+  border-radius: 50%;
+  transform: rotate(0);
+  background-color: rgba(130, 205, 255, 0.05);
+}
+50%{ 
+  transform: rotate(180deg);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  background-color: rgba(130, 205, 255,0.2);
+}
+100%{ 
+  border-radius: 50%;
+  transform: rotate(360deg);
+  background-color: rgba(130, 205, 255,0.05);
+}
+}
