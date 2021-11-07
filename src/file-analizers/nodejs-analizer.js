@@ -2,6 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import { getContentWithinClosure, getLineFromContent } from '../common-utils.js';
 
+export const NODEJS_ANALIZER_ID = 'NODEJS';
+
 /**
  * Retuns data from a NodeJS file project
  * @param {string} fileName File name
@@ -24,6 +26,10 @@ export function NodeJSAnalizer(fileName, directory) {
   }
 
   return fileData;
+}
+
+export function isValidNodeJSProject() {
+  return true;
 }
 
 /**

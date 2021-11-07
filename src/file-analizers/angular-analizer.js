@@ -2,6 +2,8 @@ import path from 'path';
 import fs from 'fs';
 import { getContentWithinClosure, trim, getLineFromContent } from '../common-utils.js'; 
 
+export const ANGULAR_ANALIZER_ID = 'ANGULAR';
+
 /**
  * @param {string} fileName File name
  * @param {string} directory path to file including itself
@@ -34,6 +36,43 @@ export function AngularAnalizer(fileName, directory, component) {
   });
 
   return fileData;
+}
+
+/**
+ * Defines if a given root folder contains a valid angular project
+ * @param {string} root Path to angular project
+ */
+export function isValidAngularProject(root) {
+  let containsCoreDeps = containsAngularCoreDeps(root);
+  let angularConfigFile = containsAngularConfigFile(root);
+  let sourcePath = angularConfigFile.projects[angularConfigFile.defaultProject].sourceRoot;
+  root = path.join(root, sourcePath);
+  if (containsCoreDeps && angularConfigFile) {
+    return {
+      newRoot: root
+    };
+  }
+  return false;
+}
+
+function containsAngularCoreDeps(root) {
+  let packageJSON = path.join(root, './package.json');
+  let packageContent = fs.readFileSync(packageJSON, 'utf8');
+  let packageData = JSON.parse(packageContent);
+  let deps = packageData.dependencies || {};
+  return !!(deps['@angular/common'] && deps['@angular/core'] && deps['@angular/compiler']);
+}
+
+function containsAngularConfigFile(root) {
+  let angularConfig = path.join(root, './angular.json');
+  let angularConfigContent = fs.readFileSync(angularConfig);
+  let angularConfigData = JSON.parse(angularConfigContent);
+
+  let defaultProject = angularConfigData.defaultProject;
+  let project = angularConfigData.projects[defaultProject];
+  let sourceRoot = project.sourceRoot;
+
+  return angularConfigData;
 }
 
 /**

@@ -1,12 +1,20 @@
 import fs from 'fs';
 import path from 'path';
 import express from 'express';
-import { recurseDirectory } from './common-utils.js';
 import bodyParser from 'body-parser';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { AngularAnalizer } from './file-analizers/angular-analizer.js';
-import { NodeJSAnalizer } from './file-analizers/nodejs-analizer.js'; 
+import { recurseDirectory } from './common-utils.js';
+import { 
+  ANGULAR_ANALIZER_ID,
+  AngularAnalizer,
+  isValidAngularProject
+} from './file-analizers/angular-analizer.js';
+import { 
+  NODEJS_ANALIZER_ID,
+  NodeJSAnalizer,
+  isValidNodeJSProject
+} from './file-analizers/nodejs-analizer.js'; 
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -15,8 +23,14 @@ const port = 3000;
 
 // This object holds specific code analizers
 const analizers = {
-  ANGULAR: AngularAnalizer,
-  NODEJS: NodeJSAnalizer
+  [ANGULAR_ANALIZER_ID]: {
+    validatePath: isValidAngularProject,
+    tokenizePath: AngularAnalizer
+  },
+  [NODEJS_ANALIZER_ID]: {
+    validatePath: isValidNodeJSProject,
+    tokenizePath: NodeJSAnalizer
+  }
 }
 
 app.use(bodyParser.json());
@@ -39,12 +53,26 @@ app.post('/analize', (request, response) => {
   else {
     let collection = [];
     // Recurses all files from given root
-    recurseDirectory(root, (file, directory) => {
-      // This data object should be normalized to handle and render more code bases from different languages in the front end
-      let data = analizers[type.toUpperCase()](file, directory, component);
-      if (data) collection.push(data);
-      
-    });
-    response.send(collection);
+    let analizer = getProperAnalizer(type);
+    if (analizer) {
+      let validRoot = analizer.validatePath(root);
+      if (validRoot) {
+        if (validRoot.newRoot) root = validRoot.newRoot;
+        recurseDirectory(root, (file, directory) => {
+          // This data object should be normalized to handle and render more code bases from different languages in the front end
+          let data = analizer.tokenizePath(file, directory, component);
+          if (data) collection.push(data);
+        });
+        response.send(collection);
+      }
+    }
+    
   }
 });
+
+function getProperAnalizer(id) {
+  if (id && analizers[id] && analizers[id].validatePath && analizers[id].tokenizePath) {
+    return analizers[id];
+  }
+  return;
+}

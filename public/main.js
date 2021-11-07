@@ -34,39 +34,22 @@
     });
   }
 
-  function requestProjectAnalizis(source, component) {
-    if (!source || !component) {
-      alert('Fill both input values');
+  function requestProjectAnalizis() {
+    if (!canMakeRequest()) {
       return;
     }
-    if (requestInProgress) {
-      return;
-    }
+  
     searchInputContainer.classList.toggle('loading');
-
-    let xhr = new XMLHttpRequest();
-    xhr.open("POST", '/analize', true);
-    xhr.setRequestHeader("Content-Type", "application/json");    
-    xhr.onreadystatechange = function() {
-        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-          let result = JSON.parse(this.response);
-          if (result) {
-            setTimeout(() => {
-              render(result);
-              cache(source, component);
-              searchInputContainer.classList.toggle('loading');
-            });
-          }
-          else {
-            alert(`Couldn't find path, for relative paths make sure the path is correctly relative to the index.js file in the root folder of this project`)
-          }
-        }
-    }
-    xhr.send(JSON.stringify({
-      source: source,
-      component: component,
-      type: type
-    }));
+    makeRequest((result) => {
+      if (result) {
+        render(result);
+        cache(source, component);
+      }
+      else {
+        alert(`Couldn't find path, for relative paths make sure the path is correctly relative to the index.js file in the root folder of this project`)
+      }
+      searchInputContainer.classList.toggle('loading');
+    });
   }
 
   /**
@@ -207,13 +190,8 @@
       that._next = onNext;
       iterate.forEach((item, index) => {
         setTimeout(() => {
-          if (index === 0) {
-            this._first(item);
-          }
-          if (index === iterate.length -1) {
-            this._last();
-          }
-
+          if (index === 0) this._first(item);
+          if (index === iterate.length -1) this._last();
           that._next(item, index);
         }, delay * index);
       });
@@ -227,10 +205,30 @@
       that._first = onFirst;
       return that;
     };
-    this.err = (onerr) => {
-      onerr(err);
-    }
+
     return that;
+  }
+
+  function canMakeRequest() {
+    return !!sourceInput.value 
+      && (type === 'ANGULAR' && !!componentInput.value)
+      && !requestInProgress;
+  }
+
+  function makeRequest(cb) {
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", '/analize', true);
+    xhr.setRequestHeader("Content-Type", "application/json");    
+    xhr.onreadystatechange = function() {
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+          if (cb) cb(JSON.parse(this.response));
+        }
+    }
+    xhr.send(JSON.stringify({
+      source: sourceInput.value,
+      component: componentInput.value,
+      type: type
+    }));
   }
 
   init();
