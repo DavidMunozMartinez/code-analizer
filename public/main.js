@@ -210,9 +210,10 @@
   }
 
   function canMakeRequest() {
-    return !!sourceInput.value 
-      && (type === 'ANGULAR' && !!componentInput.value)
-      && !requestInProgress;
+    let hasSource = !!sourceInput.value;
+    let validInputs = (type === 'ANGULAR' && componentInput.value) || type === 'NODEJS';
+    
+    return hasSource && validInputs;
   }
 
   function makeRequest(cb) {
